@@ -40,11 +40,17 @@ module.exports = function (app, swig) {
 
     });
 
+    app.get('/autores/filtrar/:rol', function (req,res){
+       autores = filtrar_autores(req.params.rol);
+       res.redirect("/autores")
+    });
+
     app.get('/autores/*', function (req,res){
         res.redirect("/autores");
     });
 
-    function filtrar_autores(){
+    function filtrar_autores(role){
+        let autores;
         let lista_autores =[
             {
                 "nombre": "Irene",
@@ -77,7 +83,12 @@ module.exports = function (app, swig) {
                 "role": "guitarrista"
             }
 
-        ]
-        return lista_autores;
+        ];
+        if(typeof role === "undefined" || role === null || role===""){
+            autores = lista_autores;
+        }else{
+            autores = lista_autores.filter(autor => autor.role.toLocaleLowerCase() === role.toLowerCase());
+        }
+        return autores;
     }
 }
