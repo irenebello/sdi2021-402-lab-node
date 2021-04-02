@@ -1,4 +1,4 @@
-module.exports = function (app, swig) {
+module.exports = function (app, swig, gestorBD) {
     var autores = filtrar_autores();
 
     app.get("/autores", function(req, res){
