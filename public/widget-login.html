@@ -17,6 +17,7 @@
     </div>
 </div>
 <script>
+    window.history.pushState("", "", "/cliente.html?w=login");
     console.log("entramos en el script")
     $("#boton-login").click(function (){
         console.log("vamos a hacer ajax");
@@ -31,10 +32,12 @@
             success: function (respuesta){
                 console.log(respuesta.token);
                 token = respuesta.token;
+                Cookies.set('token', respuesta.token);
                 $("#contenedor-principal").load("widget-canciones.html");
             },
             error: function (error){
                 console.log("error");
+                Cookies.remove('token');
                 $("#widget-login").prepend("<div clas='alert alert-danger'>Usuario no encontrado</div>");
             }
         });
