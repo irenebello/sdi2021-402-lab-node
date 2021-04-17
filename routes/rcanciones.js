@@ -86,6 +86,10 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.get('/cancion/eliminar/:id', function (req, res) {
+        if ( req.session.usuario == null){
+            res.redirect("/tienda");
+            return;
+        }
         let criterio = {"_id" : gestorBD.mongo.ObjectID(req.params.id) };
         gestorBD.eliminarCancion(criterio,function(canciones){
             if ( canciones == null ){
@@ -97,6 +101,10 @@ module.exports = function(app, swig, gestorBD) {
     })
 
     app.get('/cancion/modificar/:id', function (req, res) {
+        if ( req.session.usuario == null){
+            res.redirect("/tienda");
+            return;
+        }
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id) };
         gestorBD.obtenerCanciones(criterio,function(canciones){
             if ( canciones == null ){
@@ -132,6 +140,10 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.post('/cancion/modificar/:id', function (req, res) {
+        if ( req.session.usuario == null){
+            res.redirect("/tienda");
+            return;
+        }
         let id = req.params.id; let criterio = { "_id" : gestorBD.mongo.ObjectID(id) };
         let cancion = {
             nombre : req.body.nombre,
