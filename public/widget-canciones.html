@@ -43,7 +43,8 @@
                 "<td>"+cancionesMostrar[i].precio+"</td>" +
                 "<td>"+
                 "<a onclick=detalles('"+cancionesMostrar[i]._id+"')>Detalles</a><br>"+
-                "<a onclick=eliminar('"+cancionesMostrar[i]._id+"')>Eliminar</a>"+
+                "<a onclick=eliminar('"+cancionesMostrar[i]._id+"')>Eliminar</a><br>"+
+                "<a onclick=modificar('"+cancionesMostrar[i]._id+"')>Modificar</a>"+
                 "</td>"+
                 "</tr>" );
             // Mucho cuidado con las comillas del eliminarCancion
@@ -62,7 +63,18 @@
                 $( "#"+_id ).remove(); // eliminar el <tr> de la canción
             },
             error : function (error){
-                $( "#contenedor-principal" ).load("widget-login.html");
+                console.log(error); // <-- Prueba
+                $("#div-errores").remove();
+                let errores = error.responseJSON.errores;
+                if(errores != null && errores.length>0){
+                    $('#widget-canciones').prepend("<div id = 'div-errores' class='alert alert-danger'> <ul id ='ul-errores'></ul></div>");
+                    for(i = 0; i < errores.length; i++){
+                        $("#ul-errores").append("<li>"+errores[i]+"</li>");
+                    }
+                }else{
+                    $("#widget-canciones").prepend("<div id = 'div-errores' class='alert alert-danger'>Se ha producido un error no controlado</div>");
+                }
+                //$( "#contenedor-principal" ).load("widget-login.html");
             }
         });
     }
@@ -70,6 +82,10 @@
     function detalles(_id) {
         idCancionSeleccionada = _id;
         $( "#contenedor-principal" ).load( "widget-detalles.html");
+    }
+    function modificar(_id) {
+        idCancionSeleccionada = _id;
+        $( "#contenedor-principal" ).load( "widget-modificar.html");
     }
     function widgetAgregar() {
         $( "#contenedor-principal" ).load( "widget-agregar.html");
